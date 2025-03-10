@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flipbook Generator</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; margin: 20px; }
+        input, button { padding: 10px; margin: 10px; width: 80%; max-width: 400px; }
+        #iframeCode { width: 90%; height: 50px; }
+    </style>
+</head>
+<body>
+
+    <h1>📖 Flipbook Generator</h1>
+    
+    <button onclick="showGuide('hi')">📜 गाइड (हिंदी)</button>
+    <button onclick="showGuide('en')">📜 Guide (English)</button>
+
+    <h3>Google Drive से PDF का लिंक डालें:</h3>
+    <input type="text" id="driveLink" placeholder="Google Drive Shareable Link">
+    <button onclick="generateFlipbook()">Generate Flipbook</button>
+
+    <h3>Flipbook Embed Code:</h3>
+    <textarea id="iframeCode" readonly></textarea>
+    <button onclick="copyCode()">Copy Code</button>
+
+    <script>
+        function extractFileID(url) {
+            let match = url.match(/[-\w]{25,}/);
+            return match ? match[0] : null;
+        }
+
+       function generateFlipbook() {
+    let driveLink = document.getElementById("driveLink").value;
+    let fileID = extractFileID(driveLink);
+    
+    if (!fileID) {
+        alert("❌ कृपया सही Google Drive लिंक डालें!");
+        return;
+    }
+
+   let flipbookURL = `https://softedge12.github.io/sarkarifileflipbook/flipbook.html?fileID=${fileID}`;
+
+    
+    document.getElementById("iframeCode").value = `<iframe src="${flipbookURL}" width="800" height="600"></iframe>\n<!-- Powered by https://www.sarkarifile.com -->`;
+}
+
+        function copyCode() {
+            let iframeCode = document.getElementById("iframeCode");
+            iframeCode.select();
+            document.execCommand("copy");
+            alert("✅ Code copied!");
+        }
+
+        function showGuide(lang) {
+            let guideText = lang === 'hi' ? 
+                "1️⃣ Google Drive पर PDF अपलोड करें।\n2️⃣ उस पर राइट क्लिक करें और 'Get Link' चुनें।\n3️⃣ लिंक को 'Anyone with the link' में बदलें।\n4️⃣ यहां लिंक पेस्ट करें और 'Generate' दबाएं।" : 
+                "1️⃣ Upload PDF to Google Drive.\n2️⃣ Right-click and select 'Get Link'.\n3️⃣ Change it to 'Anyone with the link'.\n4️⃣ Paste link here and press 'Generate'.";
+            
+            alert(guideText);
+        }
+    </script>
+
+</body>
+</html>
